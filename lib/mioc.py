@@ -1,6 +1,26 @@
 import codecs
 import sys
 
+def load_embeddings_file(file_name,in_dim,lower=False):
+    """
+    load embeddings file
+    """
+    emb={}
+    for line in open(file_name, encoding='utf-8'):
+        try:
+            fields = line.strip().split()
+            vec = [float(x) for x in fields[1:]]
+            word = fields[0]
+            if lower:
+                word = word.lower()
+            if len(vec)==in_dim:
+                emb[word] = vec
+        except ValueError:
+            print("Error converting: {}".format(line))
+
+    print("loaded pre-trained embeddings (word->emb_vec) size: {} (lower: {})".format(len(emb.keys()), lower))
+    return emb, len(emb[word])
+                                    
 def get_train_data(list_folders_name):
     X = []
     Y = []
@@ -89,17 +109,19 @@ def get_data_as_instances(folder_name, task, w2i, task2tagidx, raw=False):
     X, Y = [],[]
     org_X, org_Y = [], []
     task_labels = []
-    word_indices = []
+    k=0
     for (words, tags) in read_conll_file(folder_name, raw=raw):
-    	for word in words:
-    		if word in w2i:
-    			word_indices.append(w2i[word])
-    		else:
-    			word_indices.append(w2i["_UNK"])
-    	tag_indices = [task2tagidx[task].get(tag) for tag in tags]
-    	X.append(word_indices)
-    	Y.append(tag_indices)
-    	org_X.append(words)
-    	org_Y.append(tags)
-    	task_labels.append( task )
+        k+=1
+        word_indices = []
+        for word in words:
+            if word in w2i:
+                word_indices.append(w2i[word])
+            else:
+                word_indices.append(w2i["_UNK"])
+        tag_indices = [task2tagidx[task].get(tag) for tag in tags]
+        X.append(word_indices)
+        Y.append(tag_indices)
+        org_X.append(words)
+        org_Y.append(tags)
+        task_labels.append(task)
     return X, Y, org_X, org_Y, task_labels
