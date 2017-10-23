@@ -140,7 +140,7 @@ for iter in range(args.iters):
              
 # One file per test ...
 for i, test in enumerate( args.test ):
-    test_X, test_Y, org_X, org_Y, task_labels = tagger.get_data_as_indices(test, "task0",w2i,task2t2i)
-    correct, total = tagger.evaluate(test_X, test_Y, org_X, org_Y, w2i,task2t2ti,task_labels,wembeds, predictors)
+    test_X, test_Y, org_X, org_Y, task_labels = get_data_as_instances(test, "task0",w2i,task2t2i)
+    correct, total = evaluate(test_X, test_Y, org_X, org_Y, w2i,task2t2i,task_labels,wembeds, predictors)
     print("\nTask%s test accuracy on %s items: %.4f" % (i, i+1, correct/total), file=sys.stderr)
             

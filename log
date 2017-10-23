@@ -1,3 +1,13 @@
-[dynet] random seed: 1221715459
+[dynet] random seed: 1881607770
 [dynet] allocating memory: 512MB
 [dynet] memory allocation done.
+TASK task0 data/eng_chunking_train.conll
+8936 sentences 211727 tokens
+19123 w features
+loading embeddings
+initialized: 49999
+iter 0   total loss: 0.64
+
+dev accuracy: 0.9043
+
+Task0 test accuracy on 1 items: 0.9015
